@@ -36,10 +36,11 @@ def getBook(url):
         links_a = ul_category.find_all('a')
         category = links_a[2].get_text() #category
         
+
+
         data = {'UPC': upc, 'tirle' : title, 'URL': absolute_url, 'Price (excl. tax)': price_excluding_tax, 'Price (incl. tax)': price_including_tax, 'Availability': number_available, 'Number of reviews': review_rating,'Description' : product_description, 'category' : category, 'Image URL' : img_url}
-        with open('Product_for_one_category.csv', 'w', newline='', encoding='utf-8') as fichier_csv:
+        with open('Product_for_one_category.csv', 'a+', newline='', encoding='utf-8') as fichier_csv:
             writer = csv.DictWriter(fichier_csv, fieldnames=data)
-            writer.writeheader()
             writer.writerow(data)
             print('Données bien enregistrées!')
 

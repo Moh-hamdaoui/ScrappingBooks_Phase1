@@ -3,16 +3,6 @@ from bs4 import BeautifulSoup
 import csv
 from urllib.parse import urljoin,urlparse
 
-# def clean_url(baseURL, url):
-#     dot_dot_slash_count = url.count('../')
-#     clean_relative_path = url.replace('../', '')
-#     parsed_base_url = urlparse(baseURL)
-#     base_parts = parsed_base_url.path.split('/')
-#     new_base_parts = base_parts[:max(1, len(base_parts) - dot_dot_slash_count)]
-#     new_base_path = '/'.join(new_base_parts)
-#     new_base_url = parsed_base_url._replace(path=new_base_path).geturl()
-#     return urljoin(new_base_url, clean_relative_path)
-
 
 def getBook(url):
     baseURL = "https://books.toscrape.com/catalogue/"
@@ -47,10 +37,10 @@ def getBook(url):
         category = links_a[2].get_text() #category
         
         data = {'UPC': upc, 'tirle' : title, 'URL': absolute_url, 'Price (excl. tax)': price_excluding_tax, 'Price (incl. tax)': price_including_tax, 'Availability': number_available, 'Number of reviews': review_rating,'Description' : product_description, 'category' : category, 'Image URL' : img_url}
-        with open('Product_for_one_category.csv', 'w', newline='') as fichier_csv:
+        with open('Product_for_one_category.csv', 'w', newline='', encoding='utf-8') as fichier_csv:
             writer = csv.DictWriter(fichier_csv, fieldnames=data)
             writer.writerow(data)
-            print('Donnees bien enregistrer!')
+            print('Données bien enregistrées!')
 
 
 
@@ -66,10 +56,5 @@ if response.status_code == 200:
         links.append(block.find('a')['href'])
         
 for link in links:
-    link = "../../../its-only-the-himalayas_981/index.html"
     clean_link = link.replace("../../../", "")
-    getBook(clean_link)
-    
-
-    
-    
+    getBook(clean_link)   

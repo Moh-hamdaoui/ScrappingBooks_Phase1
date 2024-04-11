@@ -25,19 +25,21 @@ if response.status_code == 200:
     product_description_avec_tag = getParagraph[3]
     product_description = product_description_avec_tag.get_text() #productDescription
 
-    image_div = soup.find('div', class_='item active')
+    
     imgage_element = soup.find('img')
     img_url = imgage_element['src'] #URL_image
+    
 
     ul_category = soup.find('ul', class_='breadcrumb')
     links_a = ul_category.find_all('a')
     category = links_a[2].get_text() #category
     
-    data = {'UPC': upc, 'URL': urlPage, 'Price (excl. tax)': price_excluding_tax, 'Price (incl. tax)': price_including_tax, 'Availability': number_available, 'Number of reviews': review_rating,'Description' : product_description, 'category' : category, 'Image URL' : img_url}
+    data = {'UPC': upc, 'title' : title, 'URL': urlPage, 'Price (excl. tax)': price_excluding_tax, 'Price (incl. tax)': price_including_tax, 'Availability': number_available, 'Number of reviews': review_rating,'Description' : product_description, 'category' : category, 'Image URL' : img_url}
     
 
-    with open('data.csv', 'w', newline='') as fichier_csv:
+    with open('dataOneProduct.csv', 'w', newline='') as fichier_csv:
         writer = csv.DictWriter(fichier_csv, fieldnames=data)
+        writer.writeheader()
         writer.writerow(data)
 
         print('Donnees bien enregistrer!')

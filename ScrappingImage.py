@@ -12,24 +12,28 @@ response = requests.get(urlPage, headers=headers)
 if response.status_code == 200:
     soup = BeautifulSoup(response.text, 'html.parser')
     imageURL = soup.find_all('img')
-    links = []
-    
-    
+    nom_image = soup.find_all('h3')
+    titles = [tag.text for tag in nom_image]
+    clean_titles = []
+
+    for title in titles:
+        clean_title = title.replace("...", "")
+        clean_titles.append(clean_title)
+
     destination_folder = Path("ImagesSrapper")
     destination_folder.mkdir(parents=True, exist_ok=True)
-    
-    
 
-    for block in imageURL:
+    for block, title in zip(imageURL, clean_titles):  
         image_url = urljoin(urlPage, block['src'])
-        links.append(image_url)
+        nom_image = title  
+        print(nom_image)
         
-    for link in links:
-        image_content = requests.get(link).content
+        image_content = requests.get(image_url).content
         image_hash = hashlib.sha1(image_content).hexdigest()[:10]
-        file_path = destination_folder / f"{image_hash}.jpg"
-        
+        file_path = destination_folder / f"{nom_image}.jpg"  
+
         if not file_path.exists():
             image_file = io.BytesIO(image_content)
             image = Image.open(image_file).convert("RGB")
             image.save(file_path, "JPEG", quality=80)
+

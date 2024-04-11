@@ -39,6 +39,7 @@ def getBook(url):
         data = {'UPC': upc, 'tirle' : title, 'URL': absolute_url, 'Price (excl. tax)': price_excluding_tax, 'Price (incl. tax)': price_including_tax, 'Availability': number_available, 'Number of reviews': review_rating,'Description' : product_description, 'category' : category, 'Image URL' : img_url}
         with open('Product_for_one_category.csv', 'w', newline='', encoding='utf-8') as fichier_csv:
             writer = csv.DictWriter(fichier_csv, fieldnames=data)
+            writer.writeheader()
             writer.writerow(data)
             print('Données bien enregistrées!')
 
@@ -57,4 +58,4 @@ if response.status_code == 200:
         
 for link in links:
     clean_link = link.replace("../../../", "")
-    getBook(clean_link)   
+    getBook(clean_link)    

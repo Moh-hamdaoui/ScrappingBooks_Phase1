@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import csv
-from urllib.parse import urljoin,urlparse
+
 
 
 def getBook(url):
@@ -19,8 +19,8 @@ def getBook(url):
         td_infosValues = tableauInfos.find_all('td')
         infosProduct = [td.get_text() for td in td_infosValues]
         upc = infosProduct[0] #UPC
-        price_excluding_tax = infosProduct[1] #price_exc_tax
-        price_including_tax = infosProduct[2] #price_inc_tax
+        price_excluding_tax = infosProduct[2] #price_exc_tax
+        price_including_tax = infosProduct[3] #price_inc_tax
         number_available = infosProduct[5] #available
         review_rating = infosProduct[6] #review_rating
 
@@ -56,7 +56,7 @@ if response.status_code == 200:
     links = []
     for block in titre_links:
         links.append(block.find('a')['href'])
-        
+      
 for link in links:
     clean_link = link.replace("../../../", "")
     getBook(clean_link)    
